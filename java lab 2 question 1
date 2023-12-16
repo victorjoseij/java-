@@ -1,0 +1,27 @@
+import java.util.*;
+
+public class TopKFrequentNumbers {
+    private static int[] numbers;
+
+    public static List<Integer> findTopKFrequentNumbers(int k) {
+        Map<Integer, Integer> freqMap = new HashMap<>();
+        for (int num : numbers) freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+
+        PriorityQueue<Map.Entry<Integer, Integer>> pq = new PriorityQueue<>((a, b) ->
+                (b.getValue() == a.getValue()) ? Integer.compare(b.getKey(), a.getKey()) : b.getValue() - a.getValue());
+
+        pq.addAll(freqMap.entrySet());
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < k; i++) result.add(pq.poll().getKey());
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        numbers = new int[]{7, 10, 11, 5, 2, 5, 5, 7, 11, 8, 9};
+        int k = 4;
+
+        System.out.println("Given an array " + Arrays.toString(numbers) + " and K = " + k + ":\nOutput: " + findTopKFrequentNumbers(k));
+    }
+}
